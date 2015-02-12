@@ -1,22 +1,18 @@
 #!/usr/local/bin/php
 <?php
-// by Jean-Bernard Addor 2011
+
 if (1 != assert_options(ASSERT_ACTIVE) or 1 != assert_options(ASSERT_WARNING)):
     trigger_error('Assertion ignored');
 endif;
 
-
+// Create a tmp folder in actual project folder.
 $return_var = 0;
 echo passthru('mkdir -p '.getcwd().'/tmp', $return_var);
 assert ('0 == $return_var');
-// assert : directory must be writable and executable
 
 $php_process = proc_open("env PHP_FCGI_CHILDREN=15 php-cgi -b 127.0.0.1:7233", array(), $pipes);
-// env should be modified here, if this is really needed
-//$php_process = proc_open("php-cgi -b localhost:7233 ".getcwd()."/tmp/php.socket",
-//    array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $php_pipes);
-//assert('FALSE != $php_process');
 
+// Create the standard fastcgi_params file in tmp folder.
 file_put_contents(getcwd()."/tmp/fastcgi_params", '
 fastcgi_param  QUERY_STRING       $query_string;
 fastcgi_param  REQUEST_METHOD     $request_method;
@@ -43,6 +39,7 @@ fastcgi_param  SERVER_NAME        $server_name;
 fastcgi_param  REDIRECT_STATUS    200;
 ');
 
+// Create nginx.conf in tmp folder.
 file_put_contents(getcwd()."/tmp/nginx.conf", '
 http {
     server {
@@ -67,10 +64,8 @@ http {
 
 events {
     worker_connections  2048;
-
 }
 ');
-// connections should only be accepted from localhost! (security issue)
 
 // Testing nginx script.
 echo passthru('nginx -c '.getcwd().'/tmp/nginx.conf -t', $return_var);
@@ -81,6 +76,7 @@ usleep(200000); echo "Launching Nginx\n";
 echo passthru('nginx -c '.getcwd().'/tmp/nginx.conf', $return_var);
 assert ('0 == $return_var');
 
+// Waiting for a keypress in console...
 passthru('read -p "Press any key to finish... " -n1 -s');
 
 echo "\nShutting down Nginx\n";
