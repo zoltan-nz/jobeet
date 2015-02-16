@@ -1,4 +1,4 @@
-#!/usr/local/bin/php
+#!/usr/bin/env php
 <?php
 
 if (1 != assert_options(ASSERT_ACTIVE) or 1 != assert_options(ASSERT_WARNING)):
@@ -8,6 +8,11 @@ endif;
 // Create a tmp folder in actual project folder.
 $return_var = 0;
 echo passthru('mkdir -p '.getcwd().'/tmp', $return_var);
+assert ('0 == $return_var');
+
+// Create a log folder.
+$return_var = 0;
+echo passthru('mkdir -p '.getcwd().'/log', $return_var);
 assert ('0 == $return_var');
 
 $php_process = proc_open("env PHP_FCGI_CHILDREN=15 php-cgi -b 127.0.0.1:7233", array(), $pipes);
