@@ -154,16 +154,29 @@ http {
     keepalive_timeout 65;
 
     server {
-      listen 8082;
-      server_name 0.0.0.0;
-      server_tokens off;
+        listen 8082;
+        server_name 0.0.0.0;
+        server_tokens off;
 
-      root '.getcwd().'/web;
+        root '.getcwd().'/web;
 
-      index index.php index.html index.htm;
+        index index.php index.html index.htm;
 
-      access_log '.getcwd().'/log/access.log;
-      error_log '.getcwd().'/log/error.log;
+        access_log '.getcwd().'/log/access.log;
+        error_log '.getcwd().'/log/error.log;
+
+        location / {
+            try_files $uri /index.php?$args;
+        }
+
+        location ^~ /frontend_dev.php/ {
+            try_files $uri /frontend_dev.php
+            try_files $uri /frontend_dev.php?q=$uri&$args /index.php?q=$uri&$args;
+        }
+
+        location ^~ /sf/ {
+            root '.getcwd().'/lib/vendor/symfony/data/web/;
+        }
 
         location ~ \.php$ {
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
@@ -176,16 +189,6 @@ http {
             fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
             fastcgi_param HTTPS off;
         }
-
-        location / {
-            index index.php;
-            try_files $uri /index.php?$args;
-        }
-
-        location ^~ /sf/ {
-            alias '.getcwd().'/web/sf;
-        }
-
     }
 }
 ');
@@ -200,7 +203,8 @@ echo passthru('nginx -c '.getcwd().'/tmp/nginx.conf', $return_var);
 assert ('0 == $return_var');
 
 // Waiting for a keypress in console...
-passthru('read -p "Press any key to finish... " -n1 -s');
+echo "\nPress Enter key to exit.\n";
+passthru('read null');
 
 echo "\nShutting down Nginx\n";
 echo passthru('nginx -c '.getcwd().'/tmp/nginx.conf -s stop', $return_var);
