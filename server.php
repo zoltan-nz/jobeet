@@ -15,6 +15,7 @@ $return_var = 0;
 echo passthru('mkdir -p '.getcwd().'/log', $return_var);
 assert ('0 == $return_var');
 
+// Use php-cgi only if php-fpm not available
 $php_process = proc_open("env PHP_FCGI_CHILDREN=15 php-cgi -b 127.0.0.1:7233", array(), $pipes);
 
 // Create the standard fastcgi_params file in tmp folder.
@@ -153,6 +154,11 @@ http {
     gzip on;
     keepalive_timeout 65;
 
+    # Use this with php-fpm instead of old php-cgi
+    upstream phpfcgi {
+        server 127.0.0.1:9000;
+    }
+
     server {
         listen 8082;
         server_name 0.0.0.0;
@@ -181,6 +187,8 @@ http {
         location ~ \.php$ {
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             try_files $uri =404;
+            # fastcgi_pass phpfcgi;
+            # Old php-cgi:
             fastcgi_pass 127.0.0.1:7233;
             fastcgi_index index.php;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -210,6 +218,7 @@ echo "\nShutting down Nginx\n";
 echo passthru('nginx -c '.getcwd().'/tmp/nginx.conf -s stop', $return_var);
 assert ('0 == $return_var');
 
+// In case of usage of php-cgi
 echo "\nShutting down php-cgi (fcgi)\n";
 $php_proc_terminate = proc_terminate($php_process);
 $php_proc_close = proc_close($php_process);
