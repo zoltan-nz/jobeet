@@ -351,15 +351,28 @@ class sfToolkit
     return is_string($value) ? preg_replace_callback('/%(.+?)%/', create_function('$v', 'return sfConfig::has(strtolower($v[1])) ? sfConfig::get(strtolower($v[1])) : "%{$v[1]}%";'), $value) : $value;
   }
 
-  /**
-   * Returns subject replaced with regular expression matchs
-   *
-   * @param mixed $search        subject to search
-   * @param array $replacePairs  array of search => replace pairs
-   */
+    /**
+     * Returns subject replaced with regular expression matchs
+     *
+     * @param mixed $search subject to search
+     * @param array $replacePairs array of search => replace pairs
+     * @return mixed
+     */
   public static function pregtr($search, $replacePairs)
   {
-    return preg_replace(array_keys($replacePairs), array_values($replacePairs), $search);
+    // return preg_replace(array_keys($replacePairs), array_values($replacePairs), $search);
+
+    foreach($replacePairs as $pattern => $replacement)
+      $search = preg_replace_callback(
+          $pattern,
+          function ($matches) use ($replacement){
+              if(array_key_exists(1, $matches)){ $replacement = str_replace("\\1", $matches[1], $replacement);}
+              if(array_key_exists(2, $matches)){ $replacement = str_replace("\\2", $matches[2], $replacement);}
+              return $replacement;
+          },
+          $search
+      );
+    return $search;
   }
 
   /**
