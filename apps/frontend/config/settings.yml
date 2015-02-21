@@ -25,7 +25,7 @@ test:
 all:
   .settings:
     # Form security secret (CSRF protection)
-    csrf_secret:            750270d07e3a5dbac726466c80c7cdf05c656bcc
+    csrf_secret:            9dc537b51990defc44e19a125971976362f50b79
 
     # Output escaping settings
     escaping_strategy:      true
