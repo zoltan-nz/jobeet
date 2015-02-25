@@ -1,7 +1,6 @@
 ### Launch
 
 ```
-composer install
 php -S localhost:9000 -t ./web
 ```
 
@@ -24,10 +23,12 @@ Try the installation:
 php -S localhost:9000 -t ./web
 ```
 
-Open your app:
+- Open your app:
 
-- `http://localhost:9000/`
-- `http://localhost:9000/frontend_dev.php`
+```
+    http://localhost:9000/
+    http://localhost:9000/frontend_dev.php
+```
 
 - Create your `config/doctrine/schema.yml`
 
@@ -51,3 +52,4 @@ Open your app:
 
 ```
     ./symfony doctrine:generate-module --with-show --non-verbose-templates frontend job JobeetJob
+```
