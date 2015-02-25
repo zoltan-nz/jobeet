@@ -1,5 +1,5 @@
 {
-    "require-dev": {
-        "phpmd/phpmd": "@stable"
+    "require": {
+        "lexpress/symfony1": "1.5.*"
     }
 }
