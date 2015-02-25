@@ -176,7 +176,7 @@ http {
         }
 
         location ^~ /frontend_dev.php/ {
-            try_files $uri /frontend_dev.php
+            try_files $uri /frontend_dev.php;
             try_files $uri /frontend_dev.php?q=$uri&$args /index.php?q=$uri&$args;
         }
 
