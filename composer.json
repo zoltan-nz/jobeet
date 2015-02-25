@@ -1,5 +1,0 @@
-{
-    "require": {
-        "lexpress/symfony1": "1.5.*"
-    }
-}
