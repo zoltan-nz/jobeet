@@ -18,7 +18,7 @@
     <?php foreach ($jobeet_jobs as $job): ?>
     <tr>
       <td><?= $job->getLocation() ?></td>
-      <td><a href="<?= url_for('job/show?id='.$job->getId()) ?>"><?= $job->getPosition() ?></a></td>
+      <td><?= link_to($job->getPosition(), 'job_show_user', $job) ?></td>
       <td><?= $job->getCompany() ?></td>
     </tr>
     <?php endforeach; ?>
