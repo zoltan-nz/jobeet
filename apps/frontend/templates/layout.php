@@ -4,7 +4,7 @@
 <head>
   <?php include_http_metas() ?>
   <?php include_metas() ?>
-  <?php include_title() ?>
+  <title><?php include_slot('title', 'Jobeet - Your best job board') ?></title>
   <?php include_stylesheets() ?>
   <?php include_javascripts() ?>
 </head>
@@ -57,6 +57,7 @@
   <?php endif ?>
 
   <div class="panel panel-default">
+    <div class="panel-heading">Something...</div>
     <div class="panel-body">
       <?= $sf_content ?>
     </div>
