@@ -32,4 +32,4 @@
 
 <?php endforeach ?>
 
-<a href="<?php echo url_for('job/new') ?>">New</a>
+<a href="<?php echo url_for('job_new') ?>">Post a Job</a>
