@@ -10,4 +10,7 @@
  */
 class BaseForm extends sfFormSymfony
 {
+  public function configure() {
+    $this->useFields(array('category_id', 'type', 'company', 'logo', 'url', 'position', 'location', 'description', 'how_to_apply', 'token', 'is_public', 'email'));
+  }
 }
