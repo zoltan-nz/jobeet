@@ -3,7 +3,7 @@
 ```
 git submodule update --init --recursive
 ./symfony doctrine:build --all --and-load
-php -S localhost:9000 -t ./web
+php -S localhost:8000 -t ./web
 ```
 
 ### Building a new Symfony 1.5 project
@@ -22,14 +22,14 @@ cp -r ./lib/vendor/symfony/data/web/sf/ ./web/sf/
 - Try the installation:
 
 ```
-php -S localhost:9000 -t ./web
+php -S localhost:8000 -t ./web
 ```
 
 - Open your app:
 
 ```
-http://localhost:9000/
-http://localhost:9000/frontend_dev.php
+http://localhost:8000/
+http://localhost:8000/frontend_dev.php
 ```
 
 - Create your `config/doctrine/schema.yml`
